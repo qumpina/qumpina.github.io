@@ -4,7 +4,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -66,16 +65,28 @@ body {
     margin: 0;
 }
 
-/* Основной контент */
-.content-section {
-    background-color: white;
-    border-radius: 8px;
-    padding: 25px;
-    margin: 30px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+/* Основной контент - КОНТЕЙНЕР ДЛЯ FLEXBOX (Mobile First) */
+/* Этот контейнер объединяет навигацию и все секции контента */
+.main-content {
+    /* По умолчанию (Mobile First) - вертикальный поток */
+    display: flex;
+    flex-direction: column;
+    /* Убираем отступы, которые были у .container, так как теперь это родительский контейнер для всех блоков */
+    padding: 0;
+    margin: 0;
 }
 
-.content-section h2 {
+/* Элементы внутри main-content (nav и sections) будут иметь свои отступы */
+.main-content > * {
+    margin: 30px 0; /* Отступ между блоками */
+    padding: 25px; /* Внутренние отступы */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовки секций */
+.main-content h2 {
     color: #2980b9;
     margin-bottom: 20px;
     padding-bottom: 10px;
@@ -83,34 +94,34 @@ body {
 }
 
 /* Список гиперссылок */
-.content-section ul {
+.main-content ul {
     list-style-type: none;
     padding-left: 0;
 }
 
-.content-section li {
+.main-content li {
     margin-bottom: 15px;
     padding: 8px;
     border-bottom: 1px solid #eee;
 }
 
-.content-section a {
+.main-content a {
     color: #3498db;
     text-decoration: none;
     transition: color 0.3s;
 }
 
-.content-section a:hover {
+.main-content a:hover {
     color: #2980b9;
     text-decoration: underline;
 }
 
-.content-section ol {
+.main-content ol {
     padding-left: 20px;
     margin-top: 5px;
 }
 
-.content-section ol li {
+.main-content ol li {
     border-bottom: none;
     margin-bottom: 5px;
 }
@@ -212,20 +223,87 @@ body {
     margin-top: 40px;
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-    #site-header > .container:first-child {
-        flex-direction: column;
-        gap: 15px;
+/* Адаптивность (Mobile First) */
+
+/* Стили для мобильных устройств (по умолчанию) */
+/* Уже заданы выше: .main-content { flex-direction: column; } */
+
+/* Порядок элементов на мобильных устройствах: nav -> table -> links -> form */
+#main-nav {
+    order: 1; /* Навигация первая */
+}
+
+#table-section {
+    order: 2; /* Таблица вторая */
+}
+
+.content-section {
+    order: 3; /* Список ссылок третий */
+}
+
+#form-section {
+    order: 4; /* Форма четвертая */
+}
+
+/* Media Query для планшетов и десктопов */
+@media (min-width: 768px) {
+    /* Вернемся к стилям, как в предыдущем задании */
+
+    /* Убираем flex-direction: column у .main-content, возвращаем стандартное поведение */
+    .main-content {
+        display: block; /* Или можно оставить flex, но без column */
+        padding: 0;
+        margin: 0;
     }
-    
+
+    /* Убираем order, чтобы элементы шли в порядке их следования в HTML */
     #main-nav {
-        flex-wrap: wrap;
-        justify-content: center;
+        order: 0;
     }
-    
-    .radio-group {
-        flex-direction: column;
-        gap: 10px;
+
+    #table-section {
+        order: 0;
     }
+
+    .content-section {
+        order: 0;
+    }
+
+    #form-section {
+        order: 0;
+    }
+
+    /* Восстанавливаем ширину контейнера для контента */
+    .main-content > * {
+        margin: 30px 0;
+        padding: 25px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%; /* На десктопах можно установить нужную ширину, но обычно это full width */
+    }
+
+    /* Восстановим горизонтальную навигацию */
+    #main-nav {
+        display: flex;
+        gap: 20px;
+        /* Можно добавить justify-content, если нужно */
+    }
+
+    /* Сделаем шапку более компактной, как было */
+    #site-header > .container:first-child {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+    }
+
+    /* Если нужно, можно вернуть фиксированную ширину контейнера */
+    .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    /* Для формы и других элементов можно оставить стили как есть, они уже подходят для десктопов */
 }
