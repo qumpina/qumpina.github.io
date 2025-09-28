@@ -1,9 +1,10 @@
-/* style.css */
+/* style.css - Mobile First */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -12,12 +13,12 @@ body {
 }
 
 .container {
-    max-width: 960px;
+    width: 100%;
     margin: 0 auto;
     padding: 0 15px;
 }
 
-/* Шапка */
+/* Шапка - Mobile First */
 #site-header {
     background-color: #577a9b;
     color: white;
@@ -26,8 +27,9 @@ body {
 
 #site-header > .container:first-child {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+    gap: 15px;
     padding: 15px;
 }
 
@@ -37,21 +39,26 @@ body {
 }
 
 .logo img {
-    height: 120px;
+    height: 80px;
     width: auto;
 }
 
+/* Навигация - вертикальная на мобильных */
 #main-nav {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
 }
 
 #main-nav a {
     color: white;
     text-decoration: none;
-    padding: 5px 10px;
+    padding: 10px;
     border-radius: 3px;
+    text-align: center;
     transition: background-color 0.3s;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 #main-nav a:hover {
@@ -61,87 +68,127 @@ body {
 #site-title {
     text-align: center;
     color: white;
-    font-size: 2.2em;
+    font-size: 1.8em;
     margin: 0;
 }
 
-/* Основной контент - КОНТЕЙНЕР ДЛЯ FLEXBOX (Mobile First) */
-/* Этот контейнер объединяет навигацию и все секции контента */
+/* Основной контент - Mobile First */
 .main-content {
-    /* По умолчанию (Mobile First) - вертикальный поток */
     display: flex;
     flex-direction: column;
-    /* Убираем отступы, которые были у .container, так как теперь это родительский контейнер для всех блоков */
-    padding: 0;
-    margin: 0;
 }
 
-/* Элементы внутри main-content (nav и sections) будут иметь свои отступы */
-.main-content > * {
-    margin: 30px 0; /* Отступ между блоками */
-    padding: 25px; /* Внутренние отступы */
+/* Изменение порядка для мобильных: таблица выше списка ссылок */
+#table-section {
+    order: -1; /* Таблица становится первой */
+}
+
+#links-section {
+    order: 0; /* Список ссылок следует за таблицей */
+}
+
+#form-section {
+    order: 1; /* Форма остается последней */
+}
+
+.content-section {
     background-color: white;
     border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Заголовки секций */
-.main-content h2 {
+.content-section h2 {
     color: #2980b9;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 2px solid #eee;
 }
 
 /* Список гиперссылок */
-.main-content ul {
+.content-section ul {
     list-style-type: none;
     padding-left: 0;
 }
 
-.main-content li {
+.content-section li {
     margin-bottom: 15px;
     padding: 8px;
     border-bottom: 1px solid #eee;
 }
 
-.main-content a {
+.content-section a {
     color: #3498db;
     text-decoration: none;
     transition: color 0.3s;
 }
 
-.main-content a:hover {
+.content-section a:hover {
     color: #2980b9;
     text-decoration: underline;
 }
 
-.main-content ol {
+.content-section ol {
     padding-left: 20px;
     margin-top: 5px;
 }
 
-.main-content ol li {
+.content-section ol li {
     border-bottom: none;
     margin-bottom: 5px;
+}
+
+/* Контейнер для таблицы с горизонтальной прокруткой */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 15px 0;
+    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
 }
 
 /* Таблица */
 #data-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    font-size: 0.9em;
+    min-width: 600px; /* Минимальная ширина для обеспечения читаемости */
 }
 
 #data-table th, #data-table td {
-    padding: 12px 15px;
+    padding: 8px 10px;
     text-align: left;
     border: 1px solid #ddd;
+    white-space: nowrap; /* Запрещаем перенос текста в ячейках */
 }
 
 #data-table th {
     background-color: #3498db;
     color: white;
+    position: sticky;
+    left: 0;
+}
+
+#data-table td:first-child,
+#data-table th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #3498db;
+    color: white;
+    z-index: 2;
+}
+
+#data-table td:first-child {
+    background-color: #ffffff;
+    color: #333;
+}
+
+#data-table tr:nth-child(even) td:first-child {
+    background-color: #f2f2f2;
+}
+
+#data-table tr:nth-child(odd) td:first-child {
+    background-color: #ffffff;
 }
 
 #data-table tr:nth-child(even) {
@@ -156,11 +203,34 @@ body {
     background-color: #e9f7fe;
 }
 
+#data-table tr:hover td:first-child {
+    background-color: #e9f7fe;
+}
+
+/* Индикатор прокрутки для мобильных */
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
 /* Форма */
 #user-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
 .form-group {
@@ -178,6 +248,7 @@ body {
 .form-group input[type="tel"],
 .form-group input[type="email"],
 .form-group input[type="date"],
+.form-group input[type="number"],
 .form-group select,
 .form-group textarea {
     padding: 10px;
@@ -188,7 +259,8 @@ body {
 
 .radio-group {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .radio-group label {
@@ -220,90 +292,111 @@ body {
     text-align: center;
     padding: 20px 0;
     width: 100%;
-    margin-top: 40px;
+    margin-top: 30px;
 }
 
-/* Адаптивность (Mobile First) */
-
-/* Стили для мобильных устройств (по умолчанию) */
-/* Уже заданы выше: .main-content { flex-direction: column; } */
-
-/* Порядок элементов на мобильных устройствах: nav -> table -> links -> form */
-#main-nav {
-    order: 1; /* Навигация первая */
-}
-
-#table-section {
-    order: 2; /* Таблица вторая */
-}
-
-.content-section {
-    order: 3; /* Список ссылок третий */
-}
-
-#form-section {
-    order: 4; /* Форма четвертая */
-}
-
-/* Media Query для планшетов и десктопов */
+/* ===== TABLET STYLES (768px and up) ===== */
 @media (min-width: 768px) {
-    /* Вернемся к стилям, как в предыдущем задании */
-
-    /* Убираем flex-direction: column у .main-content, возвращаем стандартное поведение */
-    .main-content {
-        display: block; /* Или можно оставить flex, но без column */
-        padding: 0;
-        margin: 0;
+    .container {
+        max-width: 720px;
     }
-
-    /* Убираем order, чтобы элементы шли в порядке их следования в HTML */
+    
+    #site-header > .container:first-child {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
     #main-nav {
-        order: 0;
+        flex-direction: row;
+        gap: 15px;
+        width: auto;
     }
-
-    #table-section {
-        order: 0;
+    
+    #main-nav a {
+        padding: 5px 10px;
+        background-color: transparent;
     }
-
-    .content-section {
-        order: 0;
+    
+    .logo img {
+        height: 100px;
     }
-
+    
+    #site-title {
+        font-size: 2em;
+    }
+    
+    /* Восстанавливаем исходный порядок для планшетов и десктопов */
+    .main-content {
+        display: block;
+    }
+    
+    #table-section,
+    #links-section,
     #form-section {
         order: 0;
     }
-
-    /* Восстанавливаем ширину контейнера для контента */
-    .main-content > * {
-        margin: 30px 0;
+    
+    .content-section {
         padding: 25px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        width: 100%; /* На десктопах можно установить нужную ширину, но обычно это full width */
+        margin: 25px 0;
     }
-
-    /* Восстановим горизонтальную навигацию */
-    #main-nav {
-        display: flex;
+    
+    /* На планшетах и десктопах убираем ограничения по ширине таблицы */
+    .table-container {
+        overflow-x: visible;
+        margin: 20px 0;
+    }
+    
+    #data-table {
+        font-size: 1em;
+        min-width: auto;
+        width: 100%;
+    }
+    
+    #data-table th, #data-table td {
+        padding: 10px 12px;
+        white-space: normal; /* Разрешаем перенос текста */
+    }
+    
+    /* Убираем sticky для десктопной версии */
+    #data-table th:first-child,
+    #data-table td:first-child {
+        position: static;
+        background-color: inherit;
+        color: inherit;
+    }
+    
+    #data-table th:first-child {
+        background-color: #3498db;
+        color: white;
+    }
+    
+    .radio-group {
+        flex-direction: row;
         gap: 20px;
-        /* Можно добавить justify-content, если нужно */
     }
+}
 
-    /* Сделаем шапку более компактной, как было */
-    #site-header > .container:first-child {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-    }
-
-    /* Если нужно, можно вернуть фиксированную ширину контейнера */
+/* ===== DESKTOP STYLES (992px and up) ===== */
+@media (min-width: 992px) {
     .container {
         max-width: 960px;
-        margin: 0 auto;
-        padding: 0 15px;
     }
-
-    /* Для формы и других элементов можно оставить стили как есть, они уже подходят для десктопов */
+    
+    .logo img {
+        height: 120px;
+    }
+    
+    #site-title {
+        font-size: 2.2em;
+    }
+    
+    .content-section {
+        margin: 30px 0;
+    }
+    
+    #data-table th, #data-table td {
+        padding: 12px 15px;
+    }
 }
